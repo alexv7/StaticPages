@@ -1,12 +1,52 @@
-<% if @user.errors.any? %>
+<% if object.errors.any? %>
   <div id="error_explanation">
     <div class="alert alert-danger">
-      The form contains <%= pluralize(@user.errors.count, "error") %>.
+      The form contains <%= pluralize(object.errors.count, "error") %>.
     </div>
     <ul>
-    <% @user.errors.full_messages.each do |msg| %>
+    <% object.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
     <% end %>
     </ul>
   </div>
 <% end %>
+
+
+<!--
+
+The second change needed to get Listing 11.37 to work is to redefine the
+error-messages partial so the following code from Listing 11.37 works:
+
+<%#= render 'shared/error_messages', object: f.object %>
+You may recall from Listing 7.18 that the error-messages partial references
+the @user variable explicitly, but in the present case we have an @micropost
+variable instead. To unify these cases, we can pass the form variable f to the
+partial and access the associated object through f.object, so that in
+
+form_for(@user) do |f|
+f.object is @user, and in
+
+form_for(@micropost) do |f|
+f.object is @micropost, etc.
+
+To pass the object to the partial, we use a hash with value equal to the object
+and key equal to the desired name of the variable in the partial, which is what
+the second line in Listing 11.37 accomplishes. In other words, object: f.object
+creates a variable called object in the error_messages partial, and we can use
+it to construct a customized error message, as shown in Listing 11.39.
+
+Listing 11.39: Error messages that work with other objects. red
+app/views/shared/_error_messages.html.erb
+ <%# if object.errors.any? %>
+  <div id="error_explanation">
+    <div class="alert alert-danger">
+      The form contains <%#= pluralize(object.errors.count, "error") %>.
+    </div>
+    <ul>
+    <%# object.errors.full_messages.each do |msg| %>
+      <li><%#= msg %></li>
+    <%# end %>
+    </ul>
+  </div>
+<%# end %>
+ -->
