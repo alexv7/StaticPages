@@ -6,3 +6,29 @@
     Posted <%= time_ago_in_words(micropost.created_at) %> ago.
   </span>
 </li>
+
+
+<!-- Listing 11.21 also adds a CSS id for each micropost using
+
+<li id="micropost-<%#= micropost.id %>">
+
+This is a generally good practice, as it opens up the possibility of
+manipulating individual microposts at a future date (using JavaScript,
+for example). -->
+
+
+
+<!-- As before, we’ll use the will_paginate method:
+
+<%#= will_paginate @microposts %>
+If you compare this with the analogous line on the user index page,
+Listing 9.41, you’ll see that before we had just
+
+<%#= will_paginate %>
+This worked because, in the context of the Users controller, will_paginate
+assumes the existence of an instance variable called @users (which, as we saw
+in Section 9.3.3, should be of class ActiveRecord::Relation). In the present
+case, since we are still in the Users controller but want to paginate microposts
+instead, we’ll pass an explicit @microposts variable to will_paginate. Of course,
+this means that we will have to define such a variable in the user show action
+(Listing 11.22). -->
