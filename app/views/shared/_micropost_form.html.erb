@@ -5,14 +5,46 @@
   </div>
   <%= f.submit "Post", class: "btn btn-primary" %>
   <span class="picture">
-    <%= f.file_field :picture %>
+    <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
   </span>
 <% end %>
 
+<script type="text/javascript">
+  $('#micropost_picture').bind('change', function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 5) {
+      alert('Maximum file size is 5MB. Please choose a smaller file.');
+    }
+  });
+</script>
 
+
+<!--
+As you can see by trying to upload a file that’s too big, the code above doesn’t
+actually clear the file input field, so a user can just dismiss the alert box
+and continue trying to upload the file. If this were a book on jQuery, we would
+probably polish this slight blemish by clearing the field, but it’s important to
+understand that front-end code like that shown in Listing 11.62 can’t prevent a
+user from trying to upload a file that’s too big. Even if our code cleared the
+file input field, there would be no way to prevent a user from editing the
+JavaScript with a web inspector or issue a direct POST request
+using, e.g., curl. To prevent users from uploading arbitrarily large files, it
+is thus essential to include a server-side validation, as in Listing 11.61.
+ -->
+ 
 <!--
 Note the inclusion of
 
 html: { multipart: true }
 in the arguments to form_for, which is necessary for file uploads.
+ -->
+
+<!--
+To go along with the validations in Listing 11.60 and Listing 11.61, we’ll add
+two client-side checks on the uploaded image.
+The valid formats consist of the MIME types accepted by the validation
+in Listing 11.60.
+Next, we’ll include a little JavaScript (or, more specifically, jQuery) to
+issue an alert if a user tries to upload an image that’s too big (which prevents
+accidental time-consuming uploads and lightens the load on the server):
  -->
