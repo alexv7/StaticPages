@@ -29,15 +29,13 @@ class MicropostsController < ApplicationController
    redirect_to request.referrer || root_url
  end
 
-# This uses the request.referrer method,11 which is closely related to the 
+# This uses the request.referrer method,11 which is closely related to the
 # request.url variable used in friendly forwarding (Section 9.2.3), and is just
 # the previous URL (in this case, the Home page).12 This is convenient because
 # microposts appear on both the Home page and on the user’s profile page, so by
 # using request.referrer we arrange to redirect back to the page issuing the
 # delete request in both cases. If the referring URL is nil (as is the case inside
 # some tests), Listing 11.50 sets the root_url as the default using the || operator.
-
-
 
 
   private

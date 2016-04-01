@@ -16,6 +16,10 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+gem 'carrierwave'
+gem 'mini_magick'
+gem 'fog'
+
 gem 'faker'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
