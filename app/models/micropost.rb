@@ -18,7 +18,7 @@ class Micropost < ActiveRecord::Base
 end
 
 
-# In contrast to previous model validations, file size validation doesn’t 
+# In contrast to previous model validations, file size validation doesn’t
 # correspond to a built-in Rails validator. As a result, validating images
 # requires defining a custom validation, which we’ll call picture_size and define
 # as shown in Listing 11.61. Note the use of validate (as opposed to validates)
