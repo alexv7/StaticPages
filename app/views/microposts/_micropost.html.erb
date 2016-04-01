@@ -1,7 +1,10 @@
-<li id="<%= micropost.id %>">
+<li id="micropost-<%= micropost.id %>">
   <%= link_to gravatar_for(micropost.user, size: 50), micropost.user %>
   <span class="user"><%= link_to micropost.user.name, micropost.user %></span>
-  <span class="content"><%= micropost.content %></span>
+  <span class="content">
+    <%= micropost.content %>
+    <%= image_tag micropost.picture.url if micropost.picture? %>
+  </span>
   <span class="timestamp">
     Posted <%= time_ago_in_words(micropost.created_at) %> ago.
     <% if current_user?(micropost.user) %>
@@ -20,7 +23,11 @@ This is a generally good practice, as it opens up the possibility of
 manipulating individual microposts at a future date (using JavaScript,
 for example). -->
 
-
+<!--
+Notice the use of the picture? boolean method to prevent displaying an image tag
+when there isn’t an image. This method is created automatically by CarrierWave
+based on the name of the image attribute.
+ -->
 
 <!-- As before, we’ll use the will_paginate method:
 
