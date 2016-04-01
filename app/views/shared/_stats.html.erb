@@ -1,0 +1,39 @@
+<% @user ||= current_user %>
+<div class="stats">
+  <a href="<%= following_user_path(@user) %>">
+    <strong id="following" class="stat">
+      <%= @user.following.count %>
+    </strong>
+    following
+  </a>
+  <a href="<%= followers_user_path(@user) %>">
+    <strong id="followers" class="stat">
+      <%= @user.followers.count %>
+    </strong>
+    followers
+  </a>
+</div>
+
+<!--
+Since we will be including the stats on both the user show pages and the home
+page, the first line of Listing 12.16 picks the right one using
+
+<%# @user ||= current_user %>
+As discussed in Box 8.1, this does nothing when @user is not nil (as on a
+profile page), but when it is (as on the Home page) it sets @user to the
+current user. Note also that the following/follower counts are calculated
+through the associations using
+
+@user.following.count
+
+and
+
+@user.followers.count
+
+Compare these to the microposts count from Listing 11.23, where we wrote
+
+@user.microposts.count
+
+to count the microposts. As in that case, Rails calculates the count
+directly in the database for efficiency.
+-->
