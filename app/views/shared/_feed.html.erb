@@ -1,0 +1,20 @@
+<% if @feed_items.any? %>
+  <ol class="microposts">
+    <%= render @feed_items %>
+  </ol>
+  <%= will_paginate @feed_items %>
+<% end %>
+
+
+<!-- The status feed partial defers the rendering to the micropost partial
+defined in Listing 11.21:
+
+<%#= render @feed_items %>
+Here Rails knows to call the micropost partial because each element of
+@feed_items has class Micropost. This causes Rails to look for a partial with
+the corresponding name in the views directory of the given resource:
+
+app/views/microposts/_micropost.html.erb
+We can add the feed to the Home page by rendering the feed partial as usual
+(Listing 11.47). The result is a display of the feed on the Home page, as
+required (Figure 11.14). -->

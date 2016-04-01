@@ -65,6 +65,22 @@ class User < ActiveRecord::Base
   #   BCrypt::Password.new(remember_digest).is_password?(remember_token)
   # end
 
+  # Defines a proto-feed.
+  # See "Following users" for the full implementation.
+  # Since each user should have a feed, we are led naturally to a feed method in
+  # the User model, which will initially just select all the microposts belonging
+  # to the current user.
+  def feed
+    # microposts
+    Micropost.where("user_id = ?", id) #this is just a list of all the microposts
+  end
+  # The question mark ensures that id is properly escaped before being included
+  # in the underlying SQL query, thereby avoiding a serious security hole called
+  # SQL injection. The id attribute here is just an integer (i.e., self.id, the
+  # unique ID of the user), so there is no danger of SQL injection in this case,
+  # but always escaping variables injected into SQL statements is a good habit to
+  # cultivate.
+
   # Returns true if the given token matches the digest.
   def authenticated?(attribute, token)
     digest = send("#{attribute}_digest")
