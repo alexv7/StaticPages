@@ -1,7 +1,7 @@
 class Micropost < ActiveRecord::Base
   belongs_to :user
   default_scope -> { order(created_at: :desc) } #order('created_at DESC') Here DESC is SQL for “descending”, i.e., in descending order from newest to oldest.5 In older versions of Rails, using this raw SQL used to be the only option to get the desired behavior, but as of Rails 4.0 we can use a more natural pure-Ruby syntax as well: order(created_at: :desc)
-
+  mount_uploader :picture, PictureUploader
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }
 
