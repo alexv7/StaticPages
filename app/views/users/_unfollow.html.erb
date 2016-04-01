@@ -1,0 +1,18 @@
+<%= form_for(current_user.active_relationships.find_by(followed_id: @user.id),
+             html: { method: :delete }) do |f| %>
+  <%= f.submit "Unfollow", class: "btn" %>
+<% end %>
+
+<!-- These two forms both use form_for to manipulate a Relationship model object; 
+the main difference between the two is that Listing 12.21 builds a new
+relationship, whereas Listing 12.22 finds the existing relationship. Naturally,
+the former sends a POST request to the Relationships controller to create a
+relationship, while the latter sends a DELETE request to destroy a relationship.
+(We’ll write these actions in Section 12.2.4.) Finally, you’ll note that the
+follow form doesn’t have any content other than the button, but it still needs
+to send the followed_id to the controller. We accomplish this with the
+hidden_field_tag method in Listing 12.21, which produces HTML of the form
+
+<input id="followed_id" name="followed_id" type="hidden" value="3" />
+As we saw in Section 10.2.4 (Listing 10.50), the hidden input tag puts the
+relevant information on the page without displaying it in the browser. -->
