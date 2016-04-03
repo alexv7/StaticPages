@@ -170,8 +170,6 @@ end
 
 =begin
 
-
-
 Expression	Meaning
 
 /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i	full regex
@@ -198,6 +196,75 @@ i	case-insensitive
 
 Table 6.1: Breaking down the valid email regex.
 
+=end
 
+
+=begin
+
+Recall from the proto-feed in Section 11.3.3 that Active Record uses the where
+method to accomplish the kind of select shown above, as illustrated in Listing
+11.44. There, our select was very simple; we just picked out all the microposts
+with user id corresponding to the current user:
+
+Micropost.where("user_id = ?", id)
+
+Here, we expect it to be more complicated, something like this:
+
+Micropost.where("user_id IN (?) OR user_id = ?", following_ids, id)
+
+We see from these conditions that we’ll need an array of ids corresponding to
+the users being followed. One way to do this is to use Ruby’s map method,
+available on any “enumerable” object, i.e., any object (such as an Array or
+a Hash) that consists of a collection of elements.9 We saw an example of this
+method in Section 4.3.2; as another example, we’ll use map to convert an
+array of integers to an array of strings:
+
+$ rails console
+>> [1, 2, 3, 4].map { |i| i.to_s }
+=> ["1", "2", "3", "4"]
+Situations like the one illustrated above, where the same method gets called on
+each element in the collection, are common enough that there’s a shorthand
+notation for it (seen briefly in Section 4.3.2) that uses an ampersand & and a
+symbol corresponding to the method:
+
+>> [1, 2, 3, 4].map(&:to_s)
+=> ["1", "2", "3", "4"]
+Using the join method (Section 4.3.1), we can create a string composed of the
+ids by joining them on comma-space :
+
+>> [1, 2, 3, 4].map(&:to_s).join(', ')
+=> "1, 2, 3, 4"
+We can use the above method to construct the necessary array of followed user
+ids by calling id on each element in user.following. For example, for the first
+user in the database this array appears as follows:
+
+>> User.first.following.map(&:id)
+=> [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+43, 44, 45, 46, 47, 48, 49, 50, 51]
+In fact, because this sort of construction is so useful, Active Record provides
+it by default:
+
+>> User.first.following_ids
+=> [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+43, 44, 45, 46, 47, 48, 49, 50, 51]
+Here the following_ids method is synthesized by Active Record based on the
+has_many :following association (Listing 12.8); the result is that we need only
+append _ids to the association name to get the ids corresponding to the
+user.following collection. A string of followed user ids then appears as follows:
+
+>> User.first.following_ids.join(', ')
+=> "4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+43, 44, 45, 46, 47, 48, 49, 50, 51"
+When inserting into an SQL string, though, you don’t need to do this;
+the ? interpolation takes care of it for you (and in fact eliminates some
+database-dependent incompatibilities). This means we can use following_ids by itself.
+
+As a result, the initial guess of
+
+Micropost.where("user_id IN (?) OR user_id = ?", following_ids, id)
+actually works!
 
 =end
