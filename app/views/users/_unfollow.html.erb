@@ -1,9 +1,10 @@
 <%= form_for(current_user.active_relationships.find_by(followed_id: @user.id),
-             html: { method: :delete }) do |f| %>
+             html: { method: :delete },
+             remote: true) do |f| %>
   <%= f.submit "Unfollow", class: "btn" %>
 <% end %>
 
-<!-- These two forms both use form_for to manipulate a Relationship model object; 
+<!-- These two forms both use form_for to manipulate a Relationship model object;
 the main difference between the two is that Listing 12.21 builds a new
 relationship, whereas Listing 12.22 finds the existing relationship. Naturally,
 the former sends a POST request to the Relationships controller to create a
