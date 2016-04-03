@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
   # Since each user should have a feed, we are led naturally to a feed method in
   # the User model, which will initially just select all the microposts belonging
   # to the current user.
-  
+
 # def feed
 #   # microposts
 #   Micropost.where("user_id = ?", id) #this is just a list of all the microposts
@@ -100,6 +100,28 @@ class User < ActiveRecord::Base
   def feed
     Micropost.where("user_id IN (?) OR user_id = ?", following_ids, id)
   end
+
+  # Returns a user's status feed. Most efficient way.
+  # Read section 12.3.3 (Subselects) in michael hartl's rails tutorial
+  def feed
+    # Micropost.where("user_id IN (:following_ids) OR user_id = :user_id",
+    #                 following_ids: following_ids, user_id: id)
+    following_ids = "SELECT followed_id FROM relationships
+                     WHERE  follower_id = :user_id"
+    Micropost.where("user_id IN (#{following_ids})
+                     OR user_id = :user_id", user_id: id)
+  end
+  # This code contains an SQL subselect, and internally the entire select for
+  # user 1 would look something like this:
+  #
+  # SELECT * FROM microposts
+  # WHERE user_id IN (SELECT followed_id FROM relationships
+  #                   WHERE  follower_id = 1)
+  #       OR user_id = 1
+  #
+  # This subselect arranges for all the set logic to be pushed into the database,
+  # which is more efficient.
+
 
   # Returns true if the given token matches the digest.
   def authenticated?(attribute, token)
