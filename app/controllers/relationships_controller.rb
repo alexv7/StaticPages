@@ -32,4 +32,9 @@ class RelationshipsController < ApplicationController
       format.js
     end
   end
+
+  # The actions above degrade gracefully, which means that they work
+  # fine in browsers that have JavaScript disabled (although a small amount of
+  # configuration is necessary, as shown in last line of config/application.rb
+
 end
