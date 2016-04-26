@@ -1,7 +1,5 @@
 == README
 
-https://quiet-stream-61305.herokuapp.com/
-
 This is a blog/twitter clone using Rails 4, where users can make status updates as well as follow and be followed by other users.
 
 You can visit the website at:
