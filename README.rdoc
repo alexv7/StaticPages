@@ -4,4 +4,4 @@ This is a blog/twitter clone using Rails 4, where users can make status updates 
 
 You can visit the website at:
 
-https://quiet-stream-61305.herokuapp.com/
+https://alexvblog.herokuapp.com/
